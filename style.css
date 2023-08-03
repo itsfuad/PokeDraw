@@ -1,0 +1,226 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body{
+    background: #f9f6ec;
+    overflow: hidden;
+}
+
+:root{
+    --selected-color: black;
+    --red: #ff1212;
+    --blue: #1212ff;
+    --lime: lime;
+    --yellow: #ffff12;
+    --black: #000000;
+}
+
+img {
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-drag: none;
+}
+
+canvas {
+    position: fixed;
+    background: #ff7e7e00;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 10px;
+}
+
+.toolbar-top{
+    position: relative;
+    width: 100%;
+    background: #f73f3f00;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 10px;
+    gap: 10px;
+}
+
+.toolbar-side{
+    position: relative;
+    width: min-content;
+    height: 100%;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.toolbars img{
+    max-width: 40px;
+    max-height: 40px;
+}
+
+.toolbar-side, .toolbar-top{
+    z-index: 100;
+}
+
+.toolbar-side .brushSizes{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 10px;
+    align-items: center;
+    background: white;
+    border-radius: 10px;
+}
+
+.brushSizes label.brushSize{
+    border-radius: 10px;
+    background: #151515;
+    cursor: pointer;
+}
+
+.brushTypes, .tools{
+    background: white;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 10px;
+}
+
+.brushTypes label, button{
+    cursor: pointer;
+}
+
+button:disabled{
+    filter: opacity(0.2);
+}
+
+.brushTypes input+ label{
+    filter: opacity(0.2);
+}
+
+.brushTypes input:checked + label{
+    filter: opacity(1);
+}
+
+.small{
+    width: 10px;
+    height: 10px;
+}
+
+.medium{
+    width: 15px;
+    height: 15px;
+}
+
+.large{
+    width: 20px;
+    height: 20px;
+}
+
+.brushSizes .brushSizeRadio:checked + label.brushSize{
+    background:  #030303;
+    outline: 2px solid rgb(0, 0, 0);
+    border: 3px solid rgb(255, 255, 255);
+}
+
+
+.color-palatte{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    padding: 10px;
+    background: white;
+    border-radius: 10px;
+    width: max-content;
+}
+
+.color-palatte .color{
+    display: flex;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.red{
+    background: var(--red);
+}
+
+.blue{
+    background: var(--blue);
+}
+
+.lime{
+    background: var(--lime);
+}
+
+.yellow{
+    background: var(--yellow);
+}
+
+.black{
+    background: var(--black);
+}
+
+.dynamic{
+    background: linear-gradient(45deg, #2212ff, 40%, #12ff75);
+}
+
+
+button{
+    background: none;
+    border: none;
+}
+
+
+input[type="radio"]:checked + .dynamic{
+    outline: 3px solid var(--selected-color);
+    border: 4px solid #ffffff;
+}
+
+input[type="radio"]:checked + .red{
+    outline: 3px solid var(--red);
+    border: 4px solid #ffffff;
+}
+
+input[type="radio"]:checked + .blue{
+    outline: 3px solid var(--blue);
+    border: 4px solid #ffffff;
+}
+
+input[type="radio"]:checked + .lime{
+    outline: 3px solid var(--lime);
+    border: 4px solid #ffffff;
+}
+
+input[type="radio"]:checked + .yellow{
+    outline: 3px solid var(--yellow);
+    border: 4px solid #ffffff;
+}
+
+input[type="radio"]:checked + .black{
+    outline: 3px solid var(--black);
+    border: 4px solid #ffffff;
+}
+
+input[type="color"]{
+    visibility: hidden;
+    position: absolute;
+}
+
+input{
+    display: none;
+}
+
+.drawingSheet{
+    height: 100vh;
+    width: 100vw;
+}
