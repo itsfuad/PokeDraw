@@ -72,11 +72,12 @@ canvas {
 .toolbar-side .brushSizes{
     display: flex;
     flex-direction: column;
-    gap: 5px;
-    padding: 10px;
+    gap: 10px;
+    padding: 20px;
     align-items: center;
     background: white;
     border-radius: 10px;
+    width: 100%;
 }
 
 .brushSizes label.brushSize{
