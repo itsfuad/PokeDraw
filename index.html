@@ -72,16 +72,16 @@
 
 	<title>PokeDraw</title>
 
-	<link rel="manifest" href="public/manifest.json" crossorigin="anonymous">
+	<link rel="manifest" href="manifest.json" crossorigin="anonymous">
 	<link rel='icon' type='image/png' href='public/favicon.png'>
-	<link rel='stylesheet' href='style.css'>
+	<link rel='stylesheet' href='./global.css'>
 
 	<script defer src='app.js'></script>
 
 	<script>
 		if ('serviceWorker' in navigator) {
 			window.addEventListener('load', function () {
-				navigator.serviceWorker.register('/sw.js').then(function (registration) {
+				navigator.serviceWorker.register('sw.js').then(function (registration) {
 					// Registration was successful
 					console.log('ServiceWorker registration successful with scope: ', registration.scope);
 				}, function (err) {
@@ -98,20 +98,24 @@
 
 	<div class="toolbar-top toolbars">
 		<button id="saveButton"><img src="public/save.png" alt="Save" /></button>
-		<div class="color-palatte">
-			<input type="radio" name="color" id="red">
-			<label for="red" class="red color"></label>
-			<input type="radio" name="color" id="blue">
-			<label for="blue" class="blue color"></label>
-			<input type="radio" name="color" id="yellow">
-			<label for="yellow" class="yellow color"></label>
-			<input type="radio" name="color" id="lime">
-			<label for="lime" class="lime color"></label>
-			<input type="radio" name="color" checked id="black">
-			<label for="black" class="black color"></label>
-			<input type="radio" name="color" id="dynamic">
-			<label for="dynamic" class="dynamic color"></label>
-			<input type="color" name="colorPicker" id="colorPicker">
+		<div class="tools">
+			<button id="undo" disabled><img src="public/undo-circular-arrow.png" alt="undo" /></button>
+			<button id="redo" disabled><img src="public/redo-arrow-symbol.png" alt="redo" /></button>
+		</div>
+		<div class="brushTypes">
+			<input type="radio" name="brushType" id="pen" checked>
+			<label for="pen"><img src="public/pencil.png" alt="pen" /></label>
+			<input type="radio" name="brushType" id="rectangle">
+			<label for="rectangle"><img src="public/rectangle.png" alt="rectangle" /></label>
+			<input type="radio" name="brushType" id="circle">
+			<label for="circle"><img src="public/circle.png" alt="circle" /></label>
+			<input type="radio" name="brushType" id="line">
+			<label for="line"><img src="public/line.png" alt="line" /></label>
+			<input type="radio" name="brushType" id="triangle">
+			<label for="triangle"><img src="public/triangle.png" alt="triangle" /></label>
+			<input type="radio" name="brushType" id="eraser">
+			<label for="eraser"><img src="public/eraser.png" alt="eraser" /></label>
+			<button id="clear"><img src="public/garbage.png" alt="clear" /></button>
 		</div>
 	</div>
 
@@ -125,25 +129,17 @@
 			<label for="large" class="large brushSize"></label>
 		</div>
 
-		<div class="brushTypes">
-			<input type="radio" name="brushType" id="pen" checked>
-			<label for="pen"><img src="public/pen.png" alt="pen" /></label>
-			<input type="radio" name="brushType" id="rectangle">
-			<label for="rectangle"><img src="public/rectangle.png" alt="rectangle" /></label>
-			<input type="radio" name="brushType" id="circle">
-			<label for="circle"><img src="public/circle.png" alt="circle" /></label>
-			<input type="radio" name="brushType" id="line">
-			<label for="line"><img src="public/line.png" alt="line" /></label>
-			<input type="radio" name="brushType" id="triangle">
-			<label for="triangle"><img src="public/triangle.png" alt="triangle" /></label>
-			<input type="radio" name="brushType" id="eraser">
-			<label for="eraser"><img src="public/eraser.png" alt="eraser" /></label>
-		</div>
-
-		<div class="tools">
-			<button id="undo" disabled><img src="public/undo-circular-arrow.png" alt="undo" /></button>
-			<button id="redo" disabled><img src="public/redo-arrow-symbol.png" alt="redo" /></button>
-			<button id="clear"><img src="public/garbage.png" alt="clear" /></button>
+		<div class="color-palatte">
+			<input type="radio" name="color" id="red">
+			<label for="red" class="red color"></label>
+			<input type="radio" name="color" id="blue">
+			<label for="blue" class="blue color"></label>
+			<input type="radio" name="color" id="yellow">
+			<label for="yellow" class="yellow color"></label>
+			<input type="radio" name="color" id="lime">
+			<label for="lime" class="lime color"></label>
+			<input type="radio" name="color" checked id="black">
+			<label for="black" class="black color"></label>
 		</div>
 	</div>
 

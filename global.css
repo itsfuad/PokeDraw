@@ -2,6 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    user-select: none;
     font-family: 'Poppins', sans-serif;
     -webkit-tap-highlight-color: transparent;
 }
@@ -90,9 +91,13 @@ canvas {
     background: white;
     border-radius: 10px;
     display: flex;
-    flex-direction: column;
     gap: 5px;
     padding: 10px;
+    flex-direction: row;
+}
+
+.tools{
+    background: none;
 }
 
 .brushTypes label, button{
@@ -135,7 +140,7 @@ button:disabled{
 
 .color-palatte{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     gap: 10px;
     padding: 10px;
     background: white;
