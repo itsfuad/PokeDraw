@@ -68,6 +68,7 @@ const canvas = document.querySelector('.drawingSheet');
 const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
+ctx.getContextAttributes().willReadFrequently = true;
 
 /**
  * @type {HTMLCanvasElement}
@@ -79,6 +80,7 @@ const brushPositionCanvas = document.querySelector('.brushPosition');
 const brushPositionCtx = brushPositionCanvas.getContext('2d');
 brushPositionCanvas.width = window.innerWidth;
 brushPositionCanvas.height = window.innerHeight;
+brushPositionCtx.getContextAttributes().willReadFrequently = true;
 
 
 function drawBrush(e) {
@@ -89,7 +91,12 @@ function drawBrush(e) {
     brushPositionCtx.stroke();
 }
 
+/**
+ * 
+ * @param {PointerEvent} e
+ */
 function handlePointerMove(e) {
+
     drawBrush(e);
     //console.log(e.clientX, e.clientY);
     if (isDrawing) {
@@ -100,6 +107,11 @@ function handlePointerMove(e) {
         draw(e);
     }
 }
+
+/**
+ * {TouchEvent} e
+ * @param {TouchEvent} e
+ */
 
 function handleTouchMove(e) {
     drawBrush(e.touches[0]);
@@ -112,21 +124,31 @@ function handleTouchMove(e) {
     }
 }
 
+let pressure = 1;
 
+/**
+ * 
+ * @param {PointerEvent} e 
+ */
 function handlePointerDown(e) {
+    e.preventDefault();
     isDrawing = true;
+
     ctx.beginPath();
     ctx.lineWidth = brushSizes[brushSize];
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
     ctx.strokeStyle = color;
-    ctx.lineWidth = brushSizes[brushSize];
+    ctx.lineWidth = brushSizes[brushSize] * pressure;
     [lastX, lastY] = [e.clientX, e.clientY];
     canvasSnapshot = ctx.getImageData(0, 0, canvas.width, canvas.height);
 }
 
+/**
+ * 
+ * @param {TouchEvent} e 
+ */
 function handleTouchDown(e) {
-    console.log(e.touches[0]);
     isDrawing = true;
     ctx.beginPath();
     ctx.lineWidth = brushSizes[brushSize];
@@ -138,18 +160,22 @@ function handleTouchDown(e) {
     canvasSnapshot = ctx.getImageData(0, 0, canvas.width, canvas.height);
 }
 
-function handlePointerUp(e) {
+function handlePointerUp() {
     isDrawing = false;
     endDraw();
 }
 
-function handleTouchUp(e) {
+function handleTouchUp() {
     isDrawing = false;
     endDraw();
 }
 
 
-
+/**
+ * 
+ * @param {PointerEvent | TouchEvent} e 
+ * @returns 
+ */
 function draw(e) {
     if (!isDrawing) return;
     if (drawMode === 'pen') {
@@ -168,6 +194,11 @@ function draw(e) {
     }
 }
 
+/**
+ * 
+ * @param {PointerEvent | TouchEvent} e 
+ * @returns 
+ */
 function erase(e) {
     ctx.globalCompositeOperation = brushModes[drawMode];
     //ctx.beginPath();
@@ -178,10 +209,15 @@ function erase(e) {
     [lastX, lastY] = [e.clientX, e.clientY]; // Update lastX and lastY for the next stroke
 }
 
+/**
+ * 
+ * @param {PointerEvent | TouchEvent} e 
+ * @returns 
+ */
 function drawPen(e) {
     //ctx.beginPath(); // Start a new path for each pen stroke
     ctx.globalCompositeOperation = brushModes[drawMode];
-
+    ctx.lineWidth = brushSizes[brushSize];
     ctx.moveTo(lastX, lastY);
     ctx.lineTo(e.clientX, e.clientY);
     ctx.stroke();
@@ -189,6 +225,11 @@ function drawPen(e) {
     [lastX, lastY] = [e.clientX, e.clientY]; // Update lastX and lastY for the next stroke
 }
 
+/**
+ * 
+ * @param {PointerEvent | TouchEvent} e 
+ * @returns 
+ */
 function drawLine(e) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     if (canvasSnapshot) {
@@ -201,6 +242,11 @@ function drawLine(e) {
     ctx.stroke();
 }
 
+/**
+ * 
+ * @param {PointerEvent | TouchEvent} e 
+ * @returns 
+ */
 function drawRectangle(e) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     if (canvasSnapshot) {
@@ -212,7 +258,11 @@ function drawRectangle(e) {
     ctx.stroke();
 }
 
-
+/**
+ * 
+ * @param {PointerEvent | TouchEvent} e 
+ * @returns 
+ */
 function drawCircle(e) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     if (canvasSnapshot) {
@@ -224,7 +274,11 @@ function drawCircle(e) {
     ctx.stroke();
 }
 
-
+/**
+ * 
+ * @param {PointerEvent | TouchEvent} e 
+ * @returns 
+ */
 function drawTriangle(e) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     if (canvasSnapshot) {
@@ -238,6 +292,7 @@ function drawTriangle(e) {
     ctx.closePath();
     ctx.stroke();
 }
+
 
 function endDraw() {
     if (lastX !== null && lastY !== null) { // Check if there was any drawing action
@@ -260,9 +315,10 @@ function endDraw() {
 }
 
 
-canvas.addEventListener('mousedown', handlePointerDown);
-canvas.addEventListener('mousemove', handlePointerMove);
-canvas.addEventListener('mouseup', handlePointerUp);
+canvas.addEventListener('pointerdown', handlePointerDown);
+canvas.addEventListener('pointermove', handlePointerMove);
+canvas.addEventListener('pointerup', handlePointerUp);
+canvas.addEventListener('pointerleave', handlePointerUp);
 
 
 canvas.addEventListener('touchstart', handleTouchDown);
