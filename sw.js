@@ -1,4 +1,4 @@
-const OFFLINE_VERSION = 3;
+const OFFLINE_VERSION = 355;
 const CACHE_NAME = 'offline-draw';
 const OFFLINE_URL = '/';
 
