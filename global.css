@@ -31,13 +31,13 @@ img {
 
 canvas {
     position: fixed;
-    height: 75vh;
-    width: 80vw;
+    height: 100vh;
+    width: 100vw;
     top: 50%;
     left: 50%;
+    border: 5px solid #000000;
     transform: translate(-50%, -50%);
-    margin: 8px;
-    border-radius: 10px;
+    border-radius: 15px;
     cursor: none;
 }
 
@@ -51,8 +51,10 @@ canvas {
 
 .toolbar-top{
     position: relative;
-    width: 100%;
+    width: max-content;
     background: #f73f3f00;
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -86,7 +88,7 @@ canvas {
     flex-direction: column;
     padding: 15px 5px;
     align-items: center;
-    background: white;
+    background: #0000000f;
     border-radius: 10px;
     width: 100%;
 }
@@ -99,7 +101,7 @@ canvas {
 }
 
 .brushTypes, .tools{
-    background: white;
+    background: #0000000f;
     border-radius: 10px;
     display: flex;
     gap: 5px;
@@ -110,14 +112,13 @@ canvas {
 .tools{
     background: none;
     flex-direction: column;
-    background: white;
+    background: #0000000f;
 }
 
 #saveButton{
-    background: #ffffff;
+    background: #0000000f;
     border-radius: 10px;
     padding: 10px;
-    color: white;
     cursor: pointer;
     border: none;
     outline: none;
@@ -172,7 +173,7 @@ button:disabled{
     flex-direction: column;
     gap: 10px;
     padding: 10px;
-    background: white;
+    background: #0000000f;
     border-radius: 10px;
     width: max-content;
 }

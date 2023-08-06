@@ -74,8 +74,8 @@ const canvas = document.querySelector('.drawingSheet');
  * @type {CanvasRenderingContext2D}
  */
 const ctx = canvas.getContext('2d');
-canvas.width = window.innerWidth * 0.80;
-canvas.height = window.innerHeight * 0.75;
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 console.log(canvas.width, canvas.height);
 ctx.getContextAttributes().willReadFrequently = true;
 
@@ -87,8 +87,8 @@ const brushPositionCanvas = document.querySelector('.brushPosition');
  * @type {CanvasRenderingContext2D}
  */
 const brushPositionCtx = brushPositionCanvas.getContext('2d');
-brushPositionCanvas.width = window.innerWidth * 0.80;
-brushPositionCanvas.height = window.innerHeight * 0.75;
+brushPositionCanvas.width = window.innerWidth;
+brushPositionCanvas.height = window.innerHeight;
 brushPositionCtx.getContextAttributes().willReadFrequently = true;
 
 /**
