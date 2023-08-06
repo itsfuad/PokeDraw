@@ -389,3 +389,14 @@ function handleSave() {
     link.href = dataURL;
     link.click();
 }
+
+
+//if mobile
+if (window.innerWidth < 600) {
+    document.body.innerHTML = `
+    <div class="mobile">
+        <span class="text1">Cannot run</span>
+        <span class="text2">Use a desktop or laptop to run.</span>
+    </div>
+    `;
+}

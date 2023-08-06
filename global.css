@@ -8,8 +8,31 @@
 }
 
 body{
-    background: #f9f6ec;
     overflow: hidden;
+}
+
+.mobile{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 40px;
+    position: relative;
+}
+
+.mobile span{
+    position: absolute;
+    padding: 40px;
+}
+
+.mobile .text1{
+    font-size: 3.5rem;
+    color: #00000014;
+}
+
+.moble .text2{
+    padding: 40px;
 }
 
 :root{
