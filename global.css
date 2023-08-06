@@ -31,11 +31,22 @@ img {
 
 canvas {
     position: fixed;
-    background: #ff7e7e00;
+    height: 75vh;
+    width: 80vw;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    margin: 8px;
     border-radius: 10px;
+    cursor: none;
+}
+
+.drawingSheet{
+    background: white;
+}
+
+.brushPosition{
+    z-index: 90;
 }
 
 .toolbar-top{
@@ -73,8 +84,7 @@ canvas {
 .toolbar-side .brushSizes{
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    padding: 20px;
+    padding: 15px 5px;
     align-items: center;
     background: white;
     border-radius: 10px;
@@ -85,6 +95,7 @@ canvas {
     border-radius: 10px;
     background: #151515;
     cursor: pointer;
+    margin: 5px;
 }
 
 .brushTypes, .tools{
@@ -98,6 +109,19 @@ canvas {
 
 .tools{
     background: none;
+    flex-direction: column;
+    background: white;
+}
+
+#saveButton{
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 10px;
+    color: white;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    transition: all 0.2s ease-in-out;
 }
 
 .brushTypes label, button{
@@ -114,6 +138,11 @@ button:disabled{
 
 .brushTypes input:checked + label{
     filter: opacity(1);
+}
+
+.xsmall{
+    width: 5px;
+    height: 5px;
 }
 
 .small{
@@ -224,9 +253,4 @@ input[type="color"]{
 
 input{
     display: none;
-}
-
-.drawingSheet{
-    height: 100vh;
-    width: 100vw;
 }

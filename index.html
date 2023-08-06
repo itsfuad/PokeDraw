@@ -78,7 +78,7 @@
 
 	<script defer src='app.js'></script>
 
-	<script>
+	<!--script>
 		if ('serviceWorker' in navigator) {
 			window.addEventListener('load', function () {
 				navigator.serviceWorker.register('sw.js').then(function (registration) {
@@ -90,7 +90,7 @@
 				});
 			});
 		}
-	</script>
+	</script-->
 
 </head>
 
@@ -98,10 +98,6 @@
 
 	<div class="toolbar-top toolbars">
 		<button id="saveButton"><img src="public/save.png" alt="Save" /></button>
-		<div class="tools">
-			<button id="undo" disabled><img src="public/undo-circular-arrow.png" alt="undo" /></button>
-			<button id="redo" disabled><img src="public/redo-arrow-symbol.png" alt="redo" /></button>
-		</div>
 		<div class="brushTypes">
 			<input type="radio" name="brushType" id="pen" checked>
 			<label for="pen"><img src="public/pencil.png" alt="pen" /></label>
@@ -121,7 +117,9 @@
 
 	<div class="toolbar-side toolbars">
 		<div class="brushSizes">
-			<input type="radio" checked class="brushSizeRadio" name="brushSize" id="small">
+			<input type="radio" checked class="brushSizeRadio" name="brushSize" id="xsmall">
+			<label for="xsmall" class="xsmall brushSize"></label>
+			<input type="radio" class="brushSizeRadio" name="brushSize" id="small">
 			<label for="small" class="small brushSize"></label>
 			<input type="radio" class="brushSizeRadio" name="brushSize" id="medium">
 			<label for="medium" class="medium brushSize"></label>
@@ -140,6 +138,10 @@
 			<label for="lime" class="lime color"></label>
 			<input type="radio" name="color" checked id="black">
 			<label for="black" class="black color"></label>
+		</div>
+		<div class="tools">
+			<button id="undo" disabled><img src="public/undo-circular-arrow.png" alt="undo" /></button>
+			<button id="redo" disabled><img src="public/redo-arrow-symbol.png" alt="redo" /></button>
 		</div>
 	</div>
 
