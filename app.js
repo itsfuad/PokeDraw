@@ -138,10 +138,17 @@ function draw(e) {
     ctx.stroke();
 
     //console.log('draw', e.clientX, e.clientY, isDrawing, undoStack.length, redoStack.length);
+    console.log('draw', e.clientX, e.clientY, isDrawing);
 
     lastX = e.clientX;
     lastY = e.clientY;
+
+    if (drawMode == 'fill'){
+        console.log('fill');
+        fill(e);
+    }
 }
+
 
 // draw straight line
 function drawLine(e) {
@@ -288,7 +295,22 @@ function handlePointerDown(e) {
     draw(e);
 }
 
+const img = new Image();
+img.src = 'public/fill-mini.png';
+
 function drawBrushPosition(e){
+    if (drawMode == 'fill'){
+        //draw the fill-mini.png image as the brush position
+        
+        brushPositionCtx.clearRect(0, 0, brushPositionCanvas.width, brushPositionCanvas.height);        
+        //a circle on the top left corner of the image
+        brushPositionCtx.fillStyle = color;
+        brushPositionCtx.beginPath();
+        brushPositionCtx.arc(e.clientX - 10, e.clientY - 10, 1, 0, Math.PI * 2);
+        brushPositionCtx.fill();
+        brushPositionCtx.drawImage(img, e.clientX - 10, e.clientY - 10, 20, 20);
+        return;
+    }
     brushPositionCtx.clearRect(0, 0, brushPositionCanvas.width, brushPositionCanvas.height);
     brushPositionCtx.beginPath();
     brushPositionCtx.arc(e.clientX, e.clientY, hoverBrushSize, 0, Math.PI * 2);
