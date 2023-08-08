@@ -138,7 +138,7 @@ function draw(e) {
     ctx.stroke();
 
     //console.log('draw', e.clientX, e.clientY, isDrawing, undoStack.length, redoStack.length);
-    console.log('draw', e.clientX, e.clientY, isDrawing);
+    //console.log('draw', e.clientX, e.clientY, isDrawing);
 
     lastX = e.clientX;
     lastY = e.clientY;
@@ -194,11 +194,12 @@ function drawRectangle(e) {
     let endX = e.clientX;
     let endY = e.clientY;
 
+    console.log(`lastX: ${lastX}, lastY: ${lastY}, endX: ${endX}, endY: ${endY}`);
     
     if (isShiftKeyDown){
         //draw square
         ctx.beginPath();
-        ctx.rect(lastX, lastY, Math.abs(endX - lastX), Math.abs(endX - lastX));
+        ctx.rect(lastX, lastY, endX - lastX, endX - lastX);
         ctx.strokeStyle = color;
         ctx.globalCompositeOperation = brushModes[drawMode];
         ctx.lineWidth = brushSizes[brushSize] * (drawMode == 'eraser' ? 10 : 1);
@@ -207,7 +208,7 @@ function drawRectangle(e) {
     } else {
         //draw rectangle
         ctx.beginPath();
-        ctx.rect(lastX, lastY, Math.abs(endX - lastX), Math.abs(endY - lastY));
+        ctx.rect(lastX, lastY, endX - lastX, endY - lastY);
         ctx.strokeStyle = color;
         ctx.globalCompositeOperation = brushModes[drawMode];
         ctx.lineWidth = brushSizes[brushSize] * (drawMode == 'eraser' ? 10 : 1);
@@ -230,7 +231,7 @@ function drawEllipse(e){
     if (isShiftKeyDown){
         //draw a circle
         ctx.beginPath();
-        ctx.arc(lastX, lastY, Math.abs(endX - lastX), 0, 2 * Math.PI);
+        ctx.arc(lastX, lastY, endX - lastX, 0, 2 * Math.PI);
         ctx.strokeStyle = color;
         ctx.globalCompositeOperation = brushModes[drawMode];
         ctx.lineWidth = brushSizes[brushSize] * (drawMode == 'eraser' ? 10 : 1);
@@ -239,7 +240,7 @@ function drawEllipse(e){
     } else {
         //draw a ellipse
         ctx.beginPath();
-        ctx.ellipse(lastX, lastY, Math.abs(endX - lastX), Math.abs(endY - lastY), 0, 0, 2 * Math.PI);
+        ctx.ellipse(lastX, lastY, endX - lastX, endY - lastY, 0, 0, 2 * Math.PI);
         ctx.strokeStyle = color;
         ctx.globalCompositeOperation = brushModes[drawMode];
         ctx.lineWidth = brushSizes[brushSize] * (drawMode == 'eraser' ? 10 : 1);

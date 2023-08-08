@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SVG Smooth Line Drawing</title>
+</head>
+<body>
+
+    <div class="controls">
+        <div class="color">
+            <label for="color">Color:</label>
+            <select id="color">
+                <option value="red">Red</option>
+                <option value="green">Green</option>
+                <option value="blue">Blue</option>
+            </select>
+        </div>
+        <div class="size">
+            <label for="size">Size:</label>
+            <select id="size">
+                <option value="1">Small</option>
+                <option value="2" selected>Medium</option>
+                <option value="3">Large</option>
+            </select>
+        </div>
+        <div class="drawType">
+            <label for="drawType">Draw Type:</label>
+            <select id="drawType">
+                <option value="freehand">Freehand</option>
+                <option value="straight">Straight</option>
+                <option value="fill">Fill</option>
+                <option value="eraser">Erase</option>
+            </select>
+        </div>
+    </div>
+
+    <svg id="drawingArea" width="500" height="500">
+        <!-- SVG lines will be drawn here -->
+    </svg>
+
+    <style>
+        svg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            border: 1px solid #030303;
+            height: 100vh;
+            width: 100vw;
+            background: gray;
+        }
+
+        .controls {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            z-index: 100;
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+
+    <script>
+        const svg = document.getElementById('drawingArea');
+        const colorSelect = document.getElementById('color');
+        const sizeSelect = document.getElementById('size');
+        const drawTypeSelect = document.getElementById('drawType');
+
+        let selectedColor = colorSelect.value;
+        let lineWidth = parseInt(sizeSelect.value);
+        let isDrawing = false;
+        let currentPath = null;
+        let lastX = 0;
+        let lastY = 0;
+
+        svg.addEventListener('mousedown', (e) => {
+            isDrawing = true;
+            lastX = e.clientX;
+            lastY = e.clientY;
+
+            if (drawTypeSelect.value !== 'eraser') {
+                // Create a new path element
+                currentPath = document.createElementNS(
+                    'http://www.w3.org/2000/svg',
+                    'path'
+                );
+                currentPath.setAttribute('stroke', selectedColor);
+                currentPath.setAttribute('stroke-width', lineWidth);
+                currentPath.setAttribute('stroke-linecap', 'round');
+                currentPath.setAttribute('fill', 'none');
+                currentPath.setAttribute('d', `M${lastX},${lastY}`);
+
+                svg.appendChild(currentPath);
+            }
+        });
+
+        svg.addEventListener('mousemove', (e) => {
+            if (!isDrawing) return;
+
+            const x = e.clientX;
+            const y = e.clientY;
+
+            const controlPointX = lastX + (x - lastX) * 0.2;
+            const controlPointY = lastY + (y - lastY) * 0.2;
+
+            if (drawTypeSelect.value !== 'eraser') {
+                currentPath.setAttribute(
+                    'd',
+                    `${currentPath.getAttribute('d')} Q${controlPointX},${controlPointY} ${x},${y}`
+                );
+            } else {
+                // Create a new path element
+                currentPath = document.createElementNS(
+                    'http://www.w3.org/2000/svg',
+                    'path'
+                );
+                currentPath.setAttribute('stroke', selectedColor);
+                currentPath.setAttribute('stroke-width', lineWidth);
+                currentPath.setAttribute('stroke-linecap', 'round');
+                currentPath.setAttribute('fill', 'none');
+                currentPath.setAttribute('d', `M${lastX},${lastY} Q${controlPointX},${controlPointY} ${x},${y}`);
+
+                svg.appendChild(currentPath);
+            }
+
+            lastX = x;
+            lastY = y;
+        });
+
+        svg.addEventListener('mouseup', () => {
+            isDrawing = false;
+            currentPath = null;
+        });
+
+        svg.addEventListener('mouseleave', () => {
+            isDrawing = false;
+            currentPath = null;
+        });
+
+        colorSelect.addEventListener('change', (e) => {
+            selectedColor = e.target.value;
+            console.log(`Selected color: ${selectedColor}`);
+        });
+
+        sizeSelect.addEventListener('change', (e) => {
+            lineWidth = parseInt(e.target.value);
+            console.log(`Selected line width: ${lineWidth}`);
+        });
+
+        drawTypeSelect.addEventListener('change', (e) => {
+            const drawType = e.target.value;
+            console.log(`Selected draw type: ${drawType}`);
+            if (drawType === 'eraser') {
+                selectedColor = '#fff';
+            } else {
+                selectedColor = colorSelect.value;
+            }
+        });
+    </script>
+</body>
+</html>
