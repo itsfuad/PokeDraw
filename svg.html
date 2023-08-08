@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SVG Smooth Line Drawing</title>
+    <title>SVG True Erase</title>
 </head>
 <body>
 
@@ -102,27 +102,24 @@
             const x = e.clientX;
             const y = e.clientY;
 
-            const controlPointX = lastX + (x - lastX) * 0.2;
-            const controlPointY = lastY + (y - lastY) * 0.2;
-
             if (drawTypeSelect.value !== 'eraser') {
+                const controlPointX = lastX + (x - lastX) * 0.2;
+                const controlPointY = lastY + (y - lastY) * 0.2;
+
                 currentPath.setAttribute(
                     'd',
                     `${currentPath.getAttribute('d')} Q${controlPointX},${controlPointY} ${x},${y}`
                 );
             } else {
-                // Create a new path element
-                currentPath = document.createElementNS(
+                const eraseCircle = document.createElementNS(
                     'http://www.w3.org/2000/svg',
-                    'path'
+                    'circle'
                 );
-                currentPath.setAttribute('stroke', selectedColor);
-                currentPath.setAttribute('stroke-width', lineWidth);
-                currentPath.setAttribute('stroke-linecap', 'round');
-                currentPath.setAttribute('fill', 'none');
-                currentPath.setAttribute('d', `M${lastX},${lastY} Q${controlPointX},${controlPointY} ${x},${y}`);
-
-                svg.appendChild(currentPath);
+                eraseCircle.setAttribute('cx', x);
+                eraseCircle.setAttribute('cy', y);
+                eraseCircle.setAttribute('r', lineWidth / 2);
+                eraseCircle.setAttribute('fill', 'white');
+                svg.appendChild(eraseCircle);
             }
 
             lastX = x;

@@ -106,9 +106,11 @@ const canvas = document.querySelector('.drawingSheet');
  * @type {CanvasRenderingContext2D}
  */
 const ctx = canvas.getContext('2d');
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+canvas.width = window.innerWidth * 4;
+canvas.height = window.innerHeight * 4;
 console.log(canvas.width, canvas.height);
+const scale = 4;
+ctx.scale(scale, scale); // Scale the canvas by the device pixel ratio
 ctx.getContextAttributes().willReadFrequently = true;
 
 /**
@@ -119,8 +121,9 @@ const brushPositionCanvas = document.querySelector('.brushPosition');
  * @type {CanvasRenderingContext2D}
  */
 const brushPositionCtx = brushPositionCanvas.getContext('2d');
-brushPositionCanvas.width = window.innerWidth;
-brushPositionCanvas.height = window.innerHeight;
+brushPositionCanvas.width = window.innerWidth * 4;
+brushPositionCanvas.height = window.innerHeight * 4;
+brushPositionCtx.scale(scale, scale);
 brushPositionCtx.getContextAttributes().willReadFrequently = true;
 
 /**
