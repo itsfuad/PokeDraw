@@ -449,7 +449,7 @@ const dynamicColor = document.getElementById('dynamicColor');
 dynamicColor.addEventListener('change', (e) => {
     const colorDiv = colorPalatte.querySelector('input:checked');
     const colorLabel = colorPalatte.querySelector('label[for=' + colorDiv.id + ']');
-    colorLabel.style.background = dynamicColor.value;
+    colorLabel.style.background = `linear-gradient(45deg, var(${dynamicColor.value}) 20%, rgb(255, 255, 255))`;
     color = dynamicColor.value;
     //update css
     console.log(colorDiv.id);
