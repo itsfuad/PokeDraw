@@ -16,11 +16,11 @@ let hoverBrushSize = 5 / 2;
 
 let color;
 
-let color1 = localStorage.getItem('color1') || 'red';
-let color2 = localStorage.getItem('color2') || 'blue';
+let color1 = localStorage.getItem('color1') || 'black';
+let color2 = localStorage.getItem('color2') || 'skyblue';
 let color3 = localStorage.getItem('color3') || 'lime';
 let color4 = localStorage.getItem('color4') || 'yellow';
-let color5 = localStorage.getItem('color5') || 'black';
+let color5 = localStorage.getItem('color5') || 'pink';
 
 document.documentElement.style.setProperty('--color1', color1);
 document.documentElement.style.setProperty('--color2', color2);
@@ -70,7 +70,7 @@ brushSizesDiv.addEventListener('click', (e) => {
 let drawMode = brushTypes.querySelector('input:checked').id;
 
 
-let selectedColorFromStorage = localStorage.getItem('color');
+let selectedColorFromStorage = localStorage.getItem('color') || 'color1';
 color = localStorage.getItem(selectedColorFromStorage);
 
 console.log(`selected color: ${color}`);
