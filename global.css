@@ -35,15 +35,6 @@ body{
     padding: 40px;
 }
 
-:root{
-    --selected-color: black;
-    --red: #ff1212;
-    --blue: #1212ff;
-    --lime: lime;
-    --yellow: #ffff12;
-    --black: #000000;
-}
-
 img {
     -webkit-user-drag: none;
     -khtml-user-drag: none;
@@ -208,28 +199,24 @@ button:disabled{
     cursor: pointer;
 }
 
-.red{
-    background: var(--red);
+.color1{
+    background: linear-gradient(45deg, var(--color1) 20%, rgb(255, 255, 255));
 }
 
-.blue{
-    background: var(--blue);
+.color2{
+    background: linear-gradient(45deg, var(--color2) 20%, rgb(255, 255, 255));
 }
 
-.lime{
-    background: var(--lime);
+.color3{
+    background: linear-gradient(45deg, var(--color3) 20%, rgb(255, 255, 255));
 }
 
-.yellow{
-    background: var(--yellow);
+.color4{
+    background: linear-gradient(45deg, var(--color4) 20%, rgb(255, 255, 255));
 }
 
-.black{
-    background: var(--black);
-}
-
-.dynamic{
-    background: linear-gradient(45deg, #2212ff, 40%, #12ff75);
+.color5{
+    background: linear-gradient(45deg, var(--color5) 20%, rgb(255, 255, 255));
 }
 
 
@@ -238,34 +225,28 @@ button{
     border: none;
 }
 
-
-input[type="radio"]:checked + .dynamic{
-    outline: 3px solid var(--selected-color);
+input[type="radio"]:checked + .color1{
+    outline: 3px solid var(--color1);
     border: 4px solid #ffffff;
 }
 
-input[type="radio"]:checked + .red{
-    outline: 3px solid var(--red);
+input[type="radio"]:checked + .color2{
+    outline: 3px solid var(--color2);
     border: 4px solid #ffffff;
 }
 
-input[type="radio"]:checked + .blue{
-    outline: 3px solid var(--blue);
+input[type="radio"]:checked + .color3{
+    outline: 3px solid var(--color3);
     border: 4px solid #ffffff;
 }
 
-input[type="radio"]:checked + .lime{
-    outline: 3px solid var(--lime);
+input[type="radio"]:checked + .color4{
+    outline: 3px solid var(--color4);
     border: 4px solid #ffffff;
 }
 
-input[type="radio"]:checked + .yellow{
-    outline: 3px solid var(--yellow);
-    border: 4px solid #ffffff;
-}
-
-input[type="radio"]:checked + .black{
-    outline: 3px solid var(--black);
+input[type="radio"]:checked + .color5{
+    outline: 3px solid var(--color5);
     border: 4px solid #ffffff;
 }
 

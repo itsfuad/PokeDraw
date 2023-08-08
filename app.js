@@ -14,19 +14,46 @@ const brushModes = {
 
 let hoverBrushSize = 5 / 2;
 
+let color;
+
+let color1 = localStorage.getItem('color1') || 'red';
+let color2 = localStorage.getItem('color2') || 'blue';
+let color3 = localStorage.getItem('color3') || 'lime';
+let color4 = localStorage.getItem('color4') || 'yellow';
+let color5 = localStorage.getItem('color5') || 'black';
+
+document.documentElement.style.setProperty('--color1', color1);
+document.documentElement.style.setProperty('--color2', color2);
+document.documentElement.style.setProperty('--color3', color3);
+document.documentElement.style.setProperty('--color4', color4);
+document.documentElement.style.setProperty('--color5', color5);
+
+localStorage.setItem('color1', color1);
+localStorage.setItem('color2', color2);
+localStorage.setItem('color3', color3);
+localStorage.setItem('color4', color4);
+localStorage.setItem('color5', color5);
+
 const colorPalatte = document.querySelector('.color-palatte');
 
 colorPalatte.addEventListener('click', (e) => {
     const selectedColor = colorPalatte.querySelector('input:checked');
-    console.log(selectedColor.id);
-    color = selectedColor.id;
+    colorMap = localStorage.getItem(selectedColor.id);
+    console.log(`selected color: ${selectedColor.id} = ${colorMap}`);
+    color = colorMap;
+    localStorage.setItem('color', selectedColor.id);
+});
+
+colorPalatte.addEventListener('dblclick', (e) => {
+    e.preventDefault();
+    dynamicColor.click();
 });
 
 const brushTypes = document.querySelector('.brushTypes');
 
 brushTypes.addEventListener('click', (e) => {
     const selectedBrush = brushTypes.querySelector('input:checked');
-    console.log(selectedBrush.id);
+    console.log(`selected brush: ${selectedBrush.id}`);
     drawMode = selectedBrush.id;
     hoverBrushSize = brushSizes[brushSize] / 2 * (drawMode == 'eraser' ? 10 : 1);
 });
@@ -42,7 +69,12 @@ brushSizesDiv.addEventListener('click', (e) => {
 
 let drawMode = brushTypes.querySelector('input:checked').id;
 
-let color = 'black';
+
+let selectedColorFromStorage = localStorage.getItem('color');
+color = localStorage.getItem(selectedColorFromStorage);
+
+console.log(`selected color: ${color}`);
+colorPalatte.querySelector(`#${selectedColorFromStorage}`).checked = true;
 
 let eraseMode = false;
 
@@ -391,8 +423,25 @@ function handleSave() {
 }
 
 
+const dynamicColor = document.getElementById('dynamicColor');
+dynamicColor.addEventListener('change', (e) => {
+    const colorDiv = colorPalatte.querySelector('input:checked');
+    const colorLabel = colorPalatte.querySelector('label[for=' + colorDiv.id + ']');
+    colorLabel.style.background = dynamicColor.value;
+    color = dynamicColor.value;
+    //update css
+    console.log(colorDiv.id);
+    document.documentElement.style.setProperty(`--${colorDiv.id}`, color);
+    localStorage.setItem(colorDiv.id, color);
+    //update color on the DOM
+    //console.log(color);
+});
+
+
 //if mobile
-if (window.innerWidth < 600) {
+const deviceType = navigator.userAgent;
+console.log(deviceType);
+if (deviceType.match(/Android|iPhone|iPad|iPod|BlackBerry|Windows Phone/i)) {
     document.body.innerHTML = `
     <div class="mobile">
         <span class="text1">Cannot run</span>

@@ -78,7 +78,7 @@
 
 	<script defer src='app.js'></script>
 
-	<script>
+	<!--script>
 		if ('serviceWorker' in navigator) {
 			window.addEventListener('load', function () {
 				navigator.serviceWorker.register('sw.js').then(function (registration) {
@@ -90,7 +90,7 @@
 				});
 			});
 		}
-	</script>
+	</script-->
 
 </head>
 
@@ -128,16 +128,17 @@
 		</div>
 
 		<div class="color-palatte">
-			<input type="radio" name="color" id="red">
-			<label for="red" class="red color"></label>
-			<input type="radio" name="color" id="blue">
-			<label for="blue" class="blue color"></label>
-			<input type="radio" name="color" id="yellow">
-			<label for="yellow" class="yellow color"></label>
-			<input type="radio" name="color" id="lime">
-			<label for="lime" class="lime color"></label>
-			<input type="radio" name="color" checked id="black">
-			<label for="black" class="black color"></label>
+			<input type="radio" name="color" id="color1">
+			<label for="color1" class="color1 color"></label>
+			<input type="radio" name="color" id="color2">
+			<label for="color2" class="color2 color"></label>
+			<input type="radio" name="color" id="color3">
+			<label for="color3" class="color3 color"></label>
+			<input type="radio" name="color" id="color4">
+			<label for="color4" class="color4 color"></label>
+			<input type="radio" name="color" id="color5">
+			<label for="color5" class="color5 color"></label>
+			<input type="color" name="dynamicColor" id="dynamicColor">
 		</div>
 		<div class="tools">
 			<button id="undo" disabled><img src="public/undo-circular-arrow-mini.png" alt="undo" /></button>
