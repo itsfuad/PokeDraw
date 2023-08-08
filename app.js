@@ -194,7 +194,7 @@ function drawRectangle(e) {
     let endX = e.clientX;
     let endY = e.clientY;
 
-    console.log(`lastX: ${lastX}, lastY: ${lastY}, endX: ${endX}, endY: ${endY}`);
+    //console.log(`lastX: ${lastX}, lastY: ${lastY}, endX: ${endX}, endY: ${endY}`);
     
     if (isShiftKeyDown){
         //draw square
