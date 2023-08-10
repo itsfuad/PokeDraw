@@ -39,7 +39,7 @@ const colorPalatte = document.querySelector('.color-palatte');
 colorPalatte.addEventListener('click', (e) => {
     const selectedColor = colorPalatte.querySelector('input:checked');
     colorMap = localStorage.getItem(selectedColor.id);
-    console.log(`selected color: ${selectedColor.id} = ${colorMap}`);
+    //console.log(`selected color: ${selectedColor.id} = ${colorMap}`);
     color = colorMap;
     localStorage.setItem('color', selectedColor.id);
 });
@@ -53,7 +53,7 @@ const brushTypes = document.querySelector('.brushTypes');
 
 brushTypes.addEventListener('click', (e) => {
     const selectedBrush = brushTypes.querySelector('input:checked');
-    console.log(`selected brush: ${selectedBrush.id}`);
+    //console.log(`selected brush: ${selectedBrush.id}`);
     drawMode = selectedBrush.id;
     hoverBrushSize = brushSizes[brushSize] / 2 * (drawMode == 'eraser' ? 10 : 1);
 });
@@ -62,7 +62,7 @@ const brushSizesDiv = document.querySelector('.brushSizes');
 
 brushSizesDiv.addEventListener('click', (e) => {
     const selectedSize = brushSizesDiv.querySelector('input:checked');
-    console.log(selectedSize.id);
+    //console.log(selectedSize.id);
     brushSize = selectedSize.id;
     hoverBrushSize = brushSizes[brushSize] / 2 * (drawMode == 'eraser' ? 10 : 1);
 });
@@ -73,7 +73,7 @@ let drawMode = brushTypes.querySelector('input:checked').id;
 let selectedColorFromStorage = localStorage.getItem('color') || 'color1';
 color = localStorage.getItem(selectedColorFromStorage);
 
-console.log(`selected color: ${color}`);
+//console.log(`selected color: ${color}`);
 colorPalatte.querySelector(`#${selectedColorFromStorage}`).checked = true;
 
 let eraseMode = false;
@@ -110,7 +110,7 @@ const canvas = document.querySelector('.drawingSheet');
 const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth * canvasScale;
 canvas.height = window.innerHeight * canvasScale;
-console.log(canvas.width, canvas.height);
+
 ctx.scale(canvasScale, canvasScale); // Scale the canvas by the device pixel ratio
 ctx.getContextAttributes().willReadFrequently = true;
 
@@ -141,7 +141,7 @@ function draw(e) {
 
         // Get the fill color
         const fillColor = toArrayRGBA(color);
-        console.log(fillColor, color);
+        //console.log(fillColor, color);
 
         // Perform flood fill
         floodFillCanvas(ctx, imageData, e.clientX, e.clientY, fillColor, 10);
@@ -426,7 +426,7 @@ function endDrawing(){
     if (!isDrawing) {
         return;
     }
-    console.log('Drawing ended');
+    //console.log('Drawing ended');
     isDrawing = false;
     lastX = null;
     lastY = null;
@@ -556,7 +556,7 @@ dynamicColor.addEventListener('change', (e) => {
     colorLabel.style.background = `linear-gradient(45deg, var(${dynamicColor.value}) 20%, rgb(255, 255, 255))`;
     color = dynamicColor.value;
     //update css
-    console.log(colorDiv.id);
+    //console.log(colorDiv.id);
     document.documentElement.style.setProperty(`--${colorDiv.id}`, color);
     localStorage.setItem(colorDiv.id, color);
     //update color on the DOM
@@ -566,7 +566,7 @@ dynamicColor.addEventListener('change', (e) => {
 
 //if mobile
 const deviceType = navigator.userAgent;
-console.log(deviceType);
+//console.log(deviceType);
 if (deviceType.match(/Android|iPhone|iPad|iPod|BlackBerry|Windows Phone/i)) {
     document.body.innerHTML = `
     <div class="mobile">
