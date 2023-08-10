@@ -16,11 +16,11 @@ let hoverBrushSize = 5 / 2;
 
 let color;
 
-let color1 = localStorage.getItem('color1') || 'black';
-let color2 = localStorage.getItem('color2') || 'skyblue';
-let color3 = localStorage.getItem('color3') || 'lime';
-let color4 = localStorage.getItem('color4') || 'yellow';
-let color5 = localStorage.getItem('color5') || 'pink';
+let color1 = localStorage.getItem('color1') || '#000000';
+let color2 = localStorage.getItem('color2') || '#87CEEB';  // 'skyblue'
+let color3 = localStorage.getItem('color3') || '#00FF00';  // 'lime'
+let color4 = localStorage.getItem('color4') || '#FFFF00';  // 'yellow'
+let color5 = localStorage.getItem('color5') || '#FFC0CB';  // 'pink'
 
 document.documentElement.style.setProperty('--color1', color1);
 document.documentElement.style.setProperty('--color2', color2);
@@ -98,6 +98,8 @@ undoButton.addEventListener('click', handleUndo);
 redoButton.addEventListener('click', handleRedo);
 clearButton.addEventListener('click', handleClear);
 
+const canvasScale = 1;
+
 /**
  * @type {HTMLCanvasElement}
  */
@@ -106,11 +108,10 @@ const canvas = document.querySelector('.drawingSheet');
  * @type {CanvasRenderingContext2D}
  */
 const ctx = canvas.getContext('2d');
-canvas.width = window.innerWidth * 4;
-canvas.height = window.innerHeight * 4;
+canvas.width = window.innerWidth * canvasScale;
+canvas.height = window.innerHeight * canvasScale;
 console.log(canvas.width, canvas.height);
-const scale = 4;
-ctx.scale(scale, scale); // Scale the canvas by the device pixel ratio
+ctx.scale(canvasScale, canvasScale); // Scale the canvas by the device pixel ratio
 ctx.getContextAttributes().willReadFrequently = true;
 
 /**
@@ -121,9 +122,9 @@ const brushPositionCanvas = document.querySelector('.brushPosition');
  * @type {CanvasRenderingContext2D}
  */
 const brushPositionCtx = brushPositionCanvas.getContext('2d');
-brushPositionCanvas.width = window.innerWidth * 4;
-brushPositionCanvas.height = window.innerHeight * 4;
-brushPositionCtx.scale(scale, scale);
+brushPositionCanvas.width = window.innerWidth * canvasScale;
+brushPositionCanvas.height = window.innerHeight * canvasScale;
+brushPositionCtx.scale(canvasScale, canvasScale);
 brushPositionCtx.getContextAttributes().willReadFrequently = true;
 
 /**
@@ -131,6 +132,24 @@ brushPositionCtx.getContextAttributes().willReadFrequently = true;
  * @param {PointerEvent | TouchEvent} e
  */
 function draw(e) {
+    if (drawMode === 'fill') {
+        // Fill the closed area with the selected color using flood fill algorithm
+
+
+        // Get the current canvas image data
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+        // Get the fill color
+        const fillColor = toArrayRGBA(color);
+        console.log(fillColor, color);
+
+        // Perform flood fill
+        floodFillCanvas(ctx, imageData, e.clientX, e.clientY, fillColor, 10);
+
+        return;
+    }
+
+    // Your existing drawing code
     ctx.beginPath();
     ctx.moveTo(lastX, lastY);
     ctx.lineTo(e.clientX, e.clientY);
@@ -140,16 +159,97 @@ function draw(e) {
     ctx.lineCap = 'round';
     ctx.stroke();
 
-    //console.log('draw', e.clientX, e.clientY, isDrawing, undoStack.length, redoStack.length);
-    //console.log('draw', e.clientX, e.clientY, isDrawing);
-
     lastX = e.clientX;
     lastY = e.clientY;
+}
 
-    if (drawMode == 'fill'){
-        console.log('fill');
-        fill(e);
+function toArrayRGBA(color){
+    let r = parseInt(color.slice(1,3), 16);
+    let g = parseInt(color.slice(3,5), 16);
+    let b = parseInt(color.slice(5,7), 16);
+    let a = parseInt(color.slice(7,9), 16) || 255;
+    return [r,g,b,a];
+}
+
+
+/**
+ * Flood fill a closed area on the canvas using BFS algorithm with a color tolerance.
+ * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
+ * @param {ImageData} imageData - The canvas image data obtained using ctx.getImageData().
+ * @param {number} startX - The starting x-coordinate of the fill.
+ * @param {number} startY - The starting y-coordinate of the fill.
+ * @param {number[]} fillColor - The color to fill with.
+ * @param {number} tolerance - The color difference tolerance (0 to 255).
+ */
+function floodFillCanvas(ctx, imageData, startX, startY, fillColor, tolerance = 0) {
+    const { data, width, height } = imageData;
+    const queue = [];
+    queue.push([startX, startY]);
+    const targetColorRGBA = getColorAtPixel(data, width, startX, startY);
+
+    while (queue.length > 0) {
+        const [x, y] = queue.shift();
+
+        if (x < 0 || y < 0 || x >= width || y >= height) {
+            continue;
+        }
+
+        const index = (y * width + x) * 4;
+        const currentColorRGBA = [data[index], data[index + 1], data[index + 2], data[index + 3]];
+
+        if (!colorsMatchWithTolerance(currentColorRGBA, targetColorRGBA, tolerance)) {
+            continue;
+        }
+
+        if (colorsMatchWithTolerance(currentColorRGBA, fillColor, tolerance)) {
+            continue;
+        }
+
+        setColorAtPixel(data, width, x, y, fillColor);
+
+        queue.push([x - 1, y]);
+        queue.push([x + 1, y]);
+        queue.push([x, y - 1]);
+        queue.push([x, y + 1]);
     }
+
+    ctx.putImageData(imageData, 0, 0);
+}
+
+// Helper function to compare colors with tolerance
+function colorsMatchWithTolerance(color1, color2, tolerance) {
+    for (let i = 0; i < 4; i++) {
+        if (Math.abs(color1[i] - color2[i]) > tolerance) {
+            return false;
+        }
+    }
+    return true;
+}
+
+
+
+// Helper functions
+
+function getColorAtPixel(data, width, x, y) {
+    const index = (y * width + x) * 4;
+    return data.slice(index, index + 4);
+}
+
+function setColorAtPixel(data, width, x, y, color) {
+    const index = (y * width + x) * 4;
+    data[index] = color[0]; // Red
+    data[index + 1] = color[1]; // Green
+    data[index + 2] = color[2]; // Blue
+    data[index + 3] = color[3]; // Alpha
+}
+
+function colorsMatch(color1, color2) {
+    return (
+        color1[0] === color2[0] &&
+        color1[1] === color2[1] &&
+        color1[2] === color2[2] &&
+        color1[3] === color2[3]
+    );
 }
 
 
@@ -310,9 +410,9 @@ function drawBrushPosition(e){
         //a circle on the top left corner of the image
         brushPositionCtx.fillStyle = color;
         brushPositionCtx.beginPath();
-        brushPositionCtx.arc(e.clientX - 10, e.clientY - 10, 1, 0, Math.PI * 2);
+        brushPositionCtx.arc(e.clientX, e.clientY, 1, 0, Math.PI * 2);
         brushPositionCtx.fill();
-        brushPositionCtx.drawImage(img, e.clientX - 10, e.clientY - 10, 20, 20);
+        brushPositionCtx.drawImage(img, e.clientX, e.clientY, 20, 20);
         return;
     }
     brushPositionCtx.clearRect(0, 0, brushPositionCanvas.width, brushPositionCanvas.height);
