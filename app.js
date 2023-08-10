@@ -127,6 +127,7 @@ brushPositionCanvas.height = window.innerHeight * canvasScale;
 brushPositionCtx.scale(canvasScale, canvasScale);
 brushPositionCtx.getContextAttributes().willReadFrequently = true;
 
+
 /**
  * 
  * @param {PointerEvent | TouchEvent} e
@@ -157,18 +158,20 @@ function draw(e) {
     ctx.globalCompositeOperation = brushModes[drawMode];
     ctx.lineWidth = brushSizes[brushSize] * (drawMode == 'eraser' ? 10 : 1);
     ctx.lineCap = 'round';
+    //turn off anti-aliasing
+
     ctx.stroke();
 
     lastX = e.clientX;
     lastY = e.clientY;
 }
 
-function toArrayRGBA(color){
-    let r = parseInt(color.slice(1,3), 16);
-    let g = parseInt(color.slice(3,5), 16);
-    let b = parseInt(color.slice(5,7), 16);
-    let a = parseInt(color.slice(7,9), 16) || 255;
-    return [r,g,b,a];
+function toArrayRGBA(color) {
+    let r = parseInt(color.slice(1, 3), 16);
+    let g = parseInt(color.slice(3, 5), 16);
+    let b = parseInt(color.slice(5, 7), 16);
+    let a = parseInt(color.slice(7, 9), 16) || 255;
+    return [r, g, b, a];
 }
 
 
@@ -260,22 +263,22 @@ function drawLine(e) {
     if (undoStack.length > 0) {
         ctx.putImageData(undoStack[undoStack.length - 1], 0, 0);
     }
-  
+
     let endX = e.clientX;
     let endY = e.clientY;
-  
+
     if (isShiftKeyDown) {
-      const deltaX = Math.abs(endX - lastX);
-      const deltaY = Math.abs(endY - lastY);
-      if (deltaX > deltaY) {
-        // Draw a purely horizontal line
-        endY = lastY;
-      } else {
-        // Draw a purely vertical line
-        endX = lastX;
-      }
+        const deltaX = Math.abs(endX - lastX);
+        const deltaY = Math.abs(endY - lastY);
+        if (deltaX > deltaY) {
+            // Draw a purely horizontal line
+            endY = lastY;
+        } else {
+            // Draw a purely vertical line
+            endX = lastX;
+        }
     }
-  
+
     ctx.beginPath();
     ctx.moveTo(lastX, lastY);
     ctx.lineTo(endX, endY);
@@ -298,8 +301,8 @@ function drawRectangle(e) {
     let endY = e.clientY;
 
     //console.log(`lastX: ${lastX}, lastY: ${lastY}, endX: ${endX}, endY: ${endY}`);
-    
-    if (isShiftKeyDown){
+
+    if (isShiftKeyDown) {
         //draw square
         ctx.beginPath();
         ctx.rect(lastX, lastY, endX - lastX, endX - lastX);
@@ -321,7 +324,7 @@ function drawRectangle(e) {
 }
 
 //draw a ellipse
-function drawEllipse(e){
+function drawEllipse(e) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     if (undoStack.length > 0) {
@@ -331,7 +334,7 @@ function drawEllipse(e){
     let endX = e.clientX;
     let endY = e.clientY;
 
-    if (isShiftKeyDown){
+    if (isShiftKeyDown) {
         //draw a circle
         ctx.beginPath();
         ctx.arc(lastX, lastY, endX - lastX, 0, 2 * Math.PI);
@@ -353,7 +356,7 @@ function drawEllipse(e){
 }
 
 //draw a triangle
-function drawTriangle(e){
+function drawTriangle(e) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     if (undoStack.length > 0) {
@@ -363,7 +366,7 @@ function drawTriangle(e){
     let endX = e.clientX;
     let endY = e.clientY;
 
-    if (isShiftKeyDown){
+    if (isShiftKeyDown) {
         //draw a equilateral triangle
         ctx.beginPath();
         ctx.moveTo(lastX, lastY);
@@ -402,11 +405,11 @@ function handlePointerDown(e) {
 const img = new Image();
 img.src = 'public/fill-mini.png';
 
-function drawBrushPosition(e){
-    if (drawMode == 'fill'){
+function drawBrushPosition(e) {
+    if (drawMode == 'fill') {
         //draw the fill-mini.png image as the brush position
-        
-        brushPositionCtx.clearRect(0, 0, brushPositionCanvas.width, brushPositionCanvas.height);        
+
+        brushPositionCtx.clearRect(0, 0, brushPositionCanvas.width, brushPositionCanvas.height);
         //a circle on the top left corner of the image
         brushPositionCtx.fillStyle = color;
         brushPositionCtx.beginPath();
@@ -422,7 +425,7 @@ function drawBrushPosition(e){
     brushPositionCtx.stroke();
 }
 
-function endDrawing(){
+function endDrawing() {
     if (!isDrawing) {
         return;
     }
@@ -438,15 +441,15 @@ function endDrawing(){
 
 function handlePointerMove(e) {
     if (isDrawing) {
-        if (drawMode == 'pen' || drawMode == 'eraser'){
+        if (drawMode == 'pen' || drawMode == 'eraser') {
             draw(e);
-        } else if (drawMode == 'line'){
+        } else if (drawMode == 'line') {
             drawLine(e);
-        } else if (drawMode == 'rectangle'){
+        } else if (drawMode == 'rectangle') {
             drawRectangle(e);
-        } else if (drawMode == 'circle'){
+        } else if (drawMode == 'circle') {
             drawEllipse(e);
-        } else if (drawMode == 'triangle'){
+        } else if (drawMode == 'triangle') {
             drawTriangle(e);
         }
     }
@@ -475,26 +478,56 @@ let isShiftKeyDown = false;
 
 // Function to handle keydown event
 document.addEventListener('keydown', (e) => {
-  if (e.shiftKey) {
-    isShiftKeyDown = true;
-  }
-  if (e.key === 'z' && e.ctrlKey) {
-    handleUndo();
-  } else if (e.key === 'y' && e.ctrlKey) {
-    handleRedo();
-  } else if (e.key === 'c' && e.ctrlKey) {
-    handleClear();
-  } else if (e.key === 's' && e.ctrlKey) {
-    e.preventDefault();
-    handleSave();
-  }
+    if (e.shiftKey) {
+        isShiftKeyDown = true;
+    }
+    if (e.key === 'z' && e.ctrlKey) {
+        handleUndo();
+    } else if (e.key === 'y' && e.ctrlKey) {
+        handleRedo();
+    } else if (e.key === 'c' && e.ctrlKey) {
+        handleClear();
+    } else if (e.key === 's' && e.ctrlKey) {
+        e.preventDefault();
+        handleSave();
+    }
+
+    if (e.key === 'p' && !e.ctrlKey) {
+        // Change to pen mode
+        drawMode = 'pen';
+    } else if (e.key === 'e' && !e.ctrlKey) {
+        drawMode = 'eraser';
+    } else if (e.key === 'l' && !e.ctrlKey) {
+        drawMode = 'line';
+    } else if (e.key === 'r' && !e.ctrlKey) {
+        drawMode = 'rectangle';
+    } else if (e.key === 'c' && !e.ctrlKey) {
+        drawMode = 'circle';
+    } else if (e.key === 't' && !e.ctrlKey) {
+        drawMode = 'triangle';
+    } else if (e.key === 'f' && !e.ctrlKey) {
+        drawMode = 'fill';
+    }
+    
+    updateDrawModeButtons();
 });
+
+function updateDrawModeButtons() {
+    const brushes = brushTypes.querySelectorAll('input');
+    console.log(brushes);
+    brushes.forEach((brush) => {
+        if (brush.id == drawMode) {
+            console.log(brush.id);
+            brush.checked = true;
+        }
+    });
+}
 
 // Function to handle keyup event
 document.addEventListener('keyup', (e) => {
-  if (!e.shiftKey) {
-    isShiftKeyDown = false;
-  }
+    if (!e.shiftKey) {
+        isShiftKeyDown = false;
+    }
 });
 
 // Function to undo the last action
