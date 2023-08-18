@@ -7,10 +7,6 @@ const brushSizes = {
     large: 20
 };
 
-const brushModes = {
-    pen: 'source-over',
-    eraser: 'destination-out'
-};
 
 let hoverBrushSize = 5 / 2;
 
@@ -150,12 +146,13 @@ function draw(e) {
         return;
     }
 
-    // Your existing drawing code
+    ctx.globalCompositeOperation = drawMode == 'eraser' ? 'destination-out' : 'source-over';
+    //console.log(ctx.globalCompositeOperation);
+    //console.log(drawMode);
     ctx.beginPath();
     ctx.moveTo(lastX, lastY);
     ctx.lineTo(e.clientX, e.clientY);
     ctx.strokeStyle = color;
-    ctx.globalCompositeOperation = brushModes[drawMode];
     ctx.lineWidth = brushSizes[brushSize] * (drawMode == 'eraser' ? 10 : 1);
     ctx.lineCap = 'round';
     //turn off anti-aliasing
@@ -283,7 +280,6 @@ function drawLine(e) {
     ctx.moveTo(lastX, lastY);
     ctx.lineTo(endX, endY);
     ctx.strokeStyle = color;
-    ctx.globalCompositeOperation = brushModes[drawMode];
     ctx.lineWidth = brushSizes[brushSize] * (drawMode == 'eraser' ? 10 : 1);
     ctx.lineCap = 'round';
     ctx.stroke();
@@ -307,7 +303,6 @@ function drawRectangle(e) {
         ctx.beginPath();
         ctx.rect(lastX, lastY, endX - lastX, endX - lastX);
         ctx.strokeStyle = color;
-        ctx.globalCompositeOperation = brushModes[drawMode];
         ctx.lineWidth = brushSizes[brushSize] * (drawMode == 'eraser' ? 10 : 1);
         ctx.lineCap = 'round';
         ctx.stroke();
@@ -316,7 +311,6 @@ function drawRectangle(e) {
         ctx.beginPath();
         ctx.rect(lastX, lastY, endX - lastX, endY - lastY);
         ctx.strokeStyle = color;
-        ctx.globalCompositeOperation = brushModes[drawMode];
         ctx.lineWidth = brushSizes[brushSize] * (drawMode == 'eraser' ? 10 : 1);
         ctx.lineCap = 'round';
         ctx.stroke();
@@ -339,7 +333,6 @@ function drawEllipse(e) {
         ctx.beginPath();
         ctx.arc(lastX, lastY, endX - lastX, 0, 2 * Math.PI);
         ctx.strokeStyle = color;
-        ctx.globalCompositeOperation = brushModes[drawMode];
         ctx.lineWidth = brushSizes[brushSize] * (drawMode == 'eraser' ? 10 : 1);
         ctx.lineCap = 'round';
         ctx.stroke();
@@ -348,7 +341,6 @@ function drawEllipse(e) {
         ctx.beginPath();
         ctx.ellipse(lastX, lastY, endX - lastX, endY - lastY, 0, 0, 2 * Math.PI);
         ctx.strokeStyle = color;
-        ctx.globalCompositeOperation = brushModes[drawMode];
         ctx.lineWidth = brushSizes[brushSize] * (drawMode == 'eraser' ? 10 : 1);
         ctx.lineCap = 'round';
         ctx.stroke();
@@ -374,7 +366,6 @@ function drawTriangle(e) {
         ctx.lineTo((lastX + endX) / 2, lastY - Math.abs(endX - lastX) * Math.sqrt(3) / 2);
         ctx.closePath();
         ctx.strokeStyle = color;
-        ctx.globalCompositeOperation = brushModes[drawMode];
         ctx.lineWidth = brushSizes[brushSize] * (drawMode == 'eraser' ? 10 : 1);
         ctx.lineCap = 'round';
         ctx.stroke();
@@ -386,7 +377,6 @@ function drawTriangle(e) {
         ctx.lineTo(lastX, endY);
         ctx.closePath();
         ctx.strokeStyle = color;
-        ctx.globalCompositeOperation = brushModes[drawMode];
         ctx.lineWidth = brushSizes[brushSize] * (drawMode == 'eraser' ? 10 : 1);
         ctx.lineCap = 'round';
         ctx.stroke();
@@ -514,10 +504,10 @@ document.addEventListener('keydown', (e) => {
 
 function updateDrawModeButtons() {
     const brushes = brushTypes.querySelectorAll('input');
-    console.log(brushes);
+    //console.log(brushes);
     brushes.forEach((brush) => {
         if (brush.id == drawMode) {
-            console.log(brush.id);
+            //console.log(brush.id);
             brush.checked = true;
         }
     });
