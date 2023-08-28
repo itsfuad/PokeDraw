@@ -7,7 +7,6 @@ const brushSizes = {
     large: 20
 };
 
-
 let hoverBrushSize = 5 / 2;
 
 let color;
