@@ -101,7 +101,6 @@ canvas {
     flex-direction: column;
     padding: 15px 5px;
     align-items: center;
-    background: #0000000f;
     border-radius: 10px;
     width: 100%;
 }
@@ -114,7 +113,6 @@ canvas {
 }
 
 .brushTypes, .tools{
-    background: #0000000f;
     border-radius: 10px;
     display: flex;
     gap: 5px;
@@ -125,11 +123,14 @@ canvas {
 .tools{
     background: none;
     flex-direction: column;
-    background: #0000000f;
+}
+
+.toolset{
+    background: #ffffff;
+    filter: drop-shadow(2px 2px 5px #0000001a);
 }
 
 #saveButton{
-    background: #0000000f;
     border-radius: 10px;
     padding: 10px;
     cursor: pointer;
@@ -186,7 +187,6 @@ button:disabled{
     flex-direction: column;
     gap: 10px;
     padding: 10px;
-    background: #0000000f;
     border-radius: 10px;
     width: max-content;
 }

@@ -106,8 +106,8 @@
 <body>
 
 	<div class="toolbar-top toolbars">
-		<button id="saveButton"><img src="public/save-mini.png" alt="Save" /></button>
-		<div class="brushTypes">
+		<button id="saveButton" class="toolset"><img src="public/save-mini.png" alt="Save" /></button>
+		<div class="brushTypes toolset">
 			<input type="radio" name="brushType" id="pen" checked>
 			<label for="pen"><img src="public/pencil-mini.png" alt="pen" /></label>
 			<input type="radio" name="brushType" id="rectangle">
@@ -128,7 +128,7 @@
 	</div>
 
 	<div class="toolbar-side toolbars">
-		<div class="brushSizes">
+		<div class="brushSizes toolset">
 			<input type="radio" checked class="brushSizeRadio" name="brushSize" id="xsmall">
 			<label for="xsmall" class="xsmall brushSize"></label>
 			<input type="radio" class="brushSizeRadio" name="brushSize" id="small">
@@ -139,7 +139,7 @@
 			<label for="large" class="large brushSize"></label>
 		</div>
 
-		<div class="color-palatte">
+		<div class="color-palatte toolset">
 			<input type="radio" name="color" id="color1">
 			<label for="color1" class="color1 color"></label>
 			<input type="radio" name="color" id="color2">
@@ -152,7 +152,7 @@
 			<label for="color5" class="color5 color"></label>
 			<input type="color" name="dynamicColor" id="dynamicColor">
 		</div>
-		<div class="tools">
+		<div class="tools toolset">
 			<button id="undo" disabled><img src="public/undo-circular-arrow-mini.png" alt="undo" /></button>
 			<button id="redo" disabled><img src="public/redo-arrow-symbol-mini.png" alt="redo" /></button>
 		</div>
