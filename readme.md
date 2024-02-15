@@ -1,5 +1,5 @@
 # PokeDraw
-PokeDraw is a simple drawing application made with HTML5 Canvas. Usefull for making quick sketches and drawings. It is inspired by the Microsoft whiteboard.
+PokeDraw is a simple and lightest drawing application made with HTML5 Canvas. Usefull for making quick sketches and drawings. It is inspired by the Microsoft whiteboard.
 
 ![Cover](./cover.png)
 
