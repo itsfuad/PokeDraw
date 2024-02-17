@@ -2,9 +2,16 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    user-select: none;
     font-family: 'Poppins', sans-serif;
-    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    scrollbar-width: none;
+	overscroll-behavior: none;
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+	-webkit-tap-highlight-color: transparent;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
 }
 
 body{
