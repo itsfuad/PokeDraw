@@ -481,7 +481,7 @@ document.addEventListener('keydown', (e) => {
         handleSave();
     }
 
-    if (e.key === 'p' && !e.ctrlKey) {
+    if ((e.key === 'p' || e.key === 'b') && !e.ctrlKey) {
         // Change to pen mode
         drawMode = 'pen';
     } else if (e.key === 'e' && !e.ctrlKey) {
