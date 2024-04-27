@@ -2,7 +2,18 @@ console.log('floodFillWorker.js loaded');
 
 // floodFillWorker.js
 
+const striptOrigin = self.origin;
+
 self.addEventListener('message', function(e) {
+
+    //verify origin of the recieved message
+    if (e.origin!== striptOrigin) {
+        self.postMessage({
+            error: 'origin not allowed'
+        });
+        return;
+    }
+
     const { imageData, width, height, clickedX, clickedY, targetColor, selectedColor } = e.data;
     const pixelData = new Uint8Array(imageData);
     const visited = new Array(height).fill().map(() => new Array(width).fill(false));
