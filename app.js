@@ -33,9 +33,7 @@ const colorPalatte = document.querySelector('.color-palatte');
 
 colorPalatte.addEventListener('click', (e) => {
     const selectedColor = colorPalatte.querySelector('input:checked');
-    colorMap = localStorage.getItem(selectedColor.id);
-    //console.log(`selected color: ${selectedColor.id} = ${colorMap}`);
-    color = colorMap;
+    color = localStorage.getItem(selectedColor.id);
     localStorage.setItem('color', selectedColor.id);
 });
 
@@ -48,7 +46,6 @@ const brushTypes = document.querySelector('.brushTypes');
 
 brushTypes.addEventListener('click', (e) => {
     const selectedBrush = brushTypes.querySelector('input:checked');
-    //console.log(`selected brush: ${selectedBrush.id}`);
     drawMode = selectedBrush.id;
     hoverBrushSize = brushSizes[brushSize] / 2 * (drawMode == 'eraser' ? 10 : 1);
 });
@@ -57,7 +54,6 @@ const brushSizesDiv = document.querySelector('.brushSizes');
 
 brushSizesDiv.addEventListener('click', (e) => {
     const selectedSize = brushSizesDiv.querySelector('input:checked');
-    //console.log(selectedSize.id);
     brushSize = selectedSize.id;
     hoverBrushSize = brushSizes[brushSize] / 2 * (drawMode == 'eraser' ? 10 : 1);
 });
@@ -68,7 +64,6 @@ let drawMode = brushTypes.querySelector('input:checked').id;
 let selectedColorFromStorage = localStorage.getItem('color') || 'color1';
 color = localStorage.getItem(selectedColorFromStorage);
 
-//console.log(`selected color: ${color}`);
 colorPalatte.querySelector(`#${selectedColorFromStorage}`).checked = true;
 
 let eraseMode = false;
@@ -130,15 +125,11 @@ brushPositionCtx.getContextAttributes().willReadFrequently = true;
 function draw(e) {
     if (drawMode === 'fill') {
         // Fill the closed area with the selected color using flood fill algorithm
-
-
         // Get the current canvas image data
         const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
         // Get the fill color
         const fillColor = toArrayRGBA(color);
-        //console.log(fillColor, color);
-
         // Perform flood fill
         floodFillCanvas(ctx, imageData, e.clientX, e.clientY, fillColor, 10);
 
@@ -146,8 +137,6 @@ function draw(e) {
     }
 
     ctx.globalCompositeOperation = drawMode == 'eraser' ? 'destination-out' : 'source-over';
-    //console.log(ctx.globalCompositeOperation);
-    //console.log(drawMode);
     ctx.beginPath();
     ctx.moveTo(lastX, lastY);
     ctx.lineTo(e.clientX, e.clientY);
@@ -155,9 +144,7 @@ function draw(e) {
     ctx.lineWidth = brushSizes[brushSize] * (drawMode == 'eraser' ? 10 : 1);
     ctx.lineCap = 'round';
     //turn off anti-aliasing
-
     ctx.stroke();
-
     lastX = e.clientX;
     lastY = e.clientY;
 }
@@ -295,8 +282,6 @@ function drawRectangle(e) {
     let endX = e.clientX;
     let endY = e.clientY;
 
-    //console.log(`lastX: ${lastX}, lastY: ${lastY}, endX: ${endX}, endY: ${endY}`);
-
     if (isShiftKeyDown) {
         //draw square
         ctx.beginPath();
@@ -418,7 +403,6 @@ function endDrawing() {
     if (!isDrawing) {
         return;
     }
-    //console.log('Drawing ended');
     isDrawing = false;
     lastX = null;
     lastY = null;
@@ -465,48 +449,77 @@ document.addEventListener('resize', () => {
 // Add a flag to track if the Shift key is currently held down
 let isShiftKeyDown = false;
 
-// Function to handle keydown event
-document.addEventListener('keydown', (e) => {
+// Handle modifier keys like Shift and Ctrl
+function handleModifierKeys(e) {
     if (e.shiftKey) {
         isShiftKeyDown = true;
     }
-    if (e.key === 'z' && e.ctrlKey) {
-        handleUndo();
-    } else if (e.key === 'y' && e.ctrlKey) {
-        handleRedo();
-    } else if (e.key === 'c' && e.ctrlKey) {
-        handleClear();
-    } else if (e.key === 's' && e.ctrlKey) {
-        e.preventDefault();
-        handleSave();
-    }
+}
 
-    if ((e.key === 'p' || e.key === 'b') && !e.ctrlKey) {
-        // Change to pen mode
-        drawMode = 'pen';
-    } else if (e.key === 'e' && !e.ctrlKey) {
-        drawMode = 'eraser';
-    } else if (e.key === 'l' && !e.ctrlKey) {
-        drawMode = 'line';
-    } else if (e.key === 'r' && !e.ctrlKey) {
-        drawMode = 'rectangle';
-    } else if (e.key === 'c' && !e.ctrlKey) {
-        drawMode = 'circle';
-    } else if (e.key === 't' && !e.ctrlKey) {
-        drawMode = 'triangle';
-    } else if (e.key === 'f' && !e.ctrlKey) {
-        drawMode = 'fill';
+// Handle control-based shortcuts
+function handleControlShortcuts(e) {
+    if (e.ctrlKey) {
+        switch (e.key) {
+            case 'z':
+                handleUndo();
+                break;
+            case 'y':
+                handleRedo();
+                break;
+            case 'c':
+                handleClear();
+                break;
+            case 's':
+                e.preventDefault();
+                handleSave();
+                break;
+        }
     }
-    
-    updateDrawModeButtons();
+}
+
+// Handle drawing mode shortcuts
+function handleDrawingModeShortcuts(e) {
+    if (!e.ctrlKey) {
+        switch (e.key) {
+            case 'p':
+            case 'b':
+                drawMode = 'pen';
+                break;
+            case 'e':
+                drawMode = 'eraser';
+                break;
+            case 'l':
+                drawMode = 'line';
+                break;
+            case 'r':
+                drawMode = 'rectangle';
+                break;
+            case 'c':
+                drawMode = 'circle';
+                break;
+            case 't':
+                drawMode = 'triangle';
+                break;
+            case 'f':
+                drawMode = 'fill';
+                break;
+        }
+        updateDrawModeButtons();
+    }
+}
+
+// Main keydown event handler
+document.addEventListener('keydown', (e) => {
+    handleModifierKeys(e);
+    handleControlShortcuts(e);
+    handleDrawingModeShortcuts(e);
 });
+
 
 function updateDrawModeButtons() {
     const brushes = brushTypes.querySelectorAll('input');
-    //console.log(brushes);
     brushes.forEach((brush) => {
         if (brush.id == drawMode) {
-            //console.log(brush.id);
             brush.checked = true;
         }
     });
@@ -588,8 +601,8 @@ dynamicColor.addEventListener('change', (e) => {
 
 //if mobile
 const deviceType = navigator.userAgent;
-//console.log(deviceType);
-if (deviceType.match(/Android|iPhone|iPad|iPod|BlackBerry|Windows Phone/i)) {
+
+if (RegExp(/Android|iPhone|iPad|iPod|BlackBerry|Windows Phone/i).exec(deviceType)) {
     document.body.innerHTML = `
     <div class="mobile">
         <span class="text1">Cannot run</span>

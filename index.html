@@ -87,20 +87,6 @@
 
 	<script defer src='app.js'></script>
 
-	<!--script>
-		if ('serviceWorker' in navigator) {
-			window.addEventListener('load', function () {
-				navigator.serviceWorker.register('sw.js').then(function (registration) {
-					// Registration was successful
-					console.log('ServiceWorker registration successful with scope: ', registration.scope);
-				}, function (err) {
-					// registration failed :(
-					console.log('ServiceWorker registration failed: ', err);
-				});
-			});
-		}
-	</script-->
-
 </head>
 
 <body>
@@ -131,10 +117,13 @@
 		<div class="brushSizes toolset">
 			<input type="radio" checked class="brushSizeRadio" name="brushSize" id="xsmall">
 			<label for="xsmall" class="xsmall brushSize"></label>
+
 			<input type="radio" class="brushSizeRadio" name="brushSize" id="small">
 			<label for="small" class="small brushSize"></label>
+
 			<input type="radio" class="brushSizeRadio" name="brushSize" id="medium">
 			<label for="medium" class="medium brushSize"></label>
+
 			<input type="radio" class="brushSizeRadio" name="brushSize" id="large">
 			<label for="large" class="large brushSize"></label>
 		</div>
@@ -142,14 +131,19 @@
 		<div class="color-palatte toolset">
 			<input type="radio" name="color" id="color1">
 			<label for="color1" class="color1 color"></label>
+
 			<input type="radio" name="color" id="color2">
 			<label for="color2" class="color2 color"></label>
+
 			<input type="radio" name="color" id="color3">
 			<label for="color3" class="color3 color"></label>
+
 			<input type="radio" name="color" id="color4">
 			<label for="color4" class="color4 color"></label>
+
 			<input type="radio" name="color" id="color5">
 			<label for="color5" class="color5 color"></label>
+			
 			<input type="color" name="dynamicColor" id="dynamicColor">
 		</div>
 		<div class="tools toolset">
